@@ -1,12 +1,11 @@
 {
-  "homepage": "https://ngchunhou.github.io",
+  "homepage": "https://ngchunhou.github.io/ngchunhou.github.io",
   "name": "ngchunhou-site",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "export": "next export",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
