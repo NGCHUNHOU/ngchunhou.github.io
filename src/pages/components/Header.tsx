@@ -1,9 +1,9 @@
-const listItems = [{name: "Personal Info", isCurrentItem: true}, {name: "Tools", isCurrentItem: false}, {name: "Contact", isCurrentItem: false}]
+export const listItems = [{name: "PERSONAL INFO", isCurrentItem: true}, {name: "TOOLS", isCurrentItem: false}, {name: "CONTACT", isCurrentItem: false}]
 function Header() {
   return (
     <>
-      <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-gray-900">
-        <div className="container flex flex-wrap items-center justify-end mx-auto">
+      <nav className="bg-white border-gray-200 dark:bg-gray-900">
+        <div className="container flex flex-wrap items-center justify-start mx-auto">
           <button
             data-collapse-toggle="navbar-default"
             type="button"
@@ -18,15 +18,15 @@ function Header() {
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg">
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                clip-rule="evenodd"></path>
+                clipRule="evenodd"></path>
             </svg>
           </button>
           <div className="hidden w-full md:block md:w-auto" id="navbar-default">
             <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                 {listItems.map(item => 
-                    <li key={item.toString()}><a href="#" className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">{item.name}</a></li>
+                    <li key={item.name}><a href="#" className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">{item.name}</a></li>
                 )}
 
             </ul>
