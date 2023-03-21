@@ -1,4 +1,4 @@
-export const listItems = [{name: "PERSONAL INFO", isCurrentItem: true}, {name: "TOOLS", isCurrentItem: false}, {name: "CONTACT", isCurrentItem: false}]
+const listItems = [{name: "PERSONAL INFO", isCurrentItem: true}, {name: "TOOLS", isCurrentItem: false}, {name: "CONTACT", isCurrentItem: false}]
 function Header() {
   return (
     <>

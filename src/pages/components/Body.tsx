@@ -1,7 +1,10 @@
+import Frame from './Frame'
 function Body() {
     return (
         <>
-            <div className="body"></div>
+            <div className="body">
+                <Frame></Frame>
+            </div>
         </>
     )
 
