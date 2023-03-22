@@ -2,9 +2,9 @@ import {useRef, useEffect} from 'react'
 import sceneAnimationConfig from '@/data/sceneAnimationConfig'
 
 class sceneAnimation {
-    ctx = null
-    sprite = null
-    initAssetImages(ctx) {
+    ctx : any
+    sprite : any = null
+    initAssetImages(ctx : CanvasRenderingContext2D | null) {
         this.ctx = ctx
         const {spriteSheetPath, canvasWidthPercent, canvasHeightSize} = sceneAnimationConfig
         this.ctx.canvas.width = document.documentElement.clientWidth * canvasWidthPercent
@@ -32,7 +32,7 @@ class sceneAnimation {
             resolve(1)
         })
     }
-    initTrees(amount) {
+    initTrees(amount: number) {
         const treePosx = 50
         const treePosy = 0
         return new Promise((resolve, reject) => {
