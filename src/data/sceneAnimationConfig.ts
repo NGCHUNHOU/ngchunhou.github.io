@@ -1,5 +1,6 @@
 let sceneAnimationConfig = {
-    spriteSource: null,
-    spriteSheetPath: "outdoorSprites.png"
+    spriteSheetPath: "outdoorSprites.png",
+    canvasWidthPercent: 0.8,
+    canvasHeightSize: 600
 }
 export default sceneAnimationConfig
