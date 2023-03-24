@@ -2,10 +2,12 @@ import {useRef, useEffect} from 'react'
 import sceneAnimationConfig from '@/data/sceneAnimationConfig'
 
 class sceneAnimation {
-    ctx : any
+    ctx : CanvasRenderingContext2D
     sprite : any = null
-    initAssetImages(ctx : CanvasRenderingContext2D | null) {
+    constructor(ctx : CanvasRenderingContext2D) {
         this.ctx = ctx
+    }
+    initAssetImages() {
         const {spriteSheetPath, canvasWidthPercent, canvasHeightSize} = sceneAnimationConfig
         this.ctx.canvas.width = document.documentElement.clientWidth * canvasWidthPercent
         this.ctx.canvas.height = canvasHeightSize
@@ -45,10 +47,14 @@ class sceneAnimation {
     }
     renderScreen()  {
         // this.ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)
-        this.sprite.onload = async () => {
-            const isOk = await Promise.all([this.initGrassLand(), this.initTrees(15)])
-        }
+        // this.sprite.onload = async () => {
+        //     const isOk = await Promise.all([this.initGrassLand(), this.initTrees(15)])
+        // }
         // requestAnimationFrame(this.renderScreen.bind(this))
+
+        // scene animation screen still in planning, so blacken this screen first
+        this.ctx.fillStyle = "black"
+        this.ctx.fillRect(0, 0, this.ctx.canvas.width,  this.ctx.canvas.height)
     }
 }
 
@@ -56,11 +62,16 @@ function Frame() {
     const sceneAnimationRef = useRef<HTMLCanvasElement>(null)
 
     useEffect(() => {
-        if (sceneAnimationRef.current) {
-            let canvas = sceneAnimationRef.current
-            let context = canvas.getContext("2d")
-            let SceneAnimation = new sceneAnimation()
-            SceneAnimation.initAssetImages(context)
+        if (!sceneAnimationRef.current)
+            throw new Error("failed to get target canvas to render animation")
+
+        let canvas = sceneAnimationRef.current
+        let context = canvas.getContext("2d")
+        let SceneAnimation : sceneAnimation
+
+        if (context != null) {
+            SceneAnimation = new sceneAnimation(context)
+            SceneAnimation.initAssetImages()
             SceneAnimation.renderScreen()
         }
     })
