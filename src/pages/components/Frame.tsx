@@ -1,48 +1,41 @@
 import {useRef, useEffect} from 'react'
 import sceneAnimationConfig from '@/data/sceneAnimationConfig'
+class Player {
+    posx : number = 0
+    posy : number = 0
+    scaleFactor : number = 0
+    sprite : HTMLImageElement
+    constructor(spritePath : string) {
+        this.sprite = new Image()
+        this.sprite.src = spritePath
+        this.scaleFactor = sceneAnimationConfig.playerScaleFactor
+    }
+    setPosition(posx : number, posy : number) {
+        this.posx = posx
+        this.posy = posy
+    }
+    goUp() { this.posy-=5 }
+    goDown() { this.posy+=5 }
+    goLeft() { this.posx-=5 }
+    goRight() { this.posx+=5 }
+}
 
 class sceneAnimation {
     ctx : CanvasRenderingContext2D
     sprite : HTMLImageElement
-    scenePosx : number = 0
-    scenePosy : number = 0
+    player : Player
     constructor(ctx : CanvasRenderingContext2D) {
         this.ctx = ctx
         this.sprite = new Image()
+        this.player = new Player(sceneAnimationConfig.playerSheetPath)
     }
     initSceneConfig() {
-        const {spriteSheetPath, canvasWidthPercent, canvasHeightSize} = sceneAnimationConfig
+        const {spriteSheetPath, playerSheetPath, canvasWidthPercent, canvasHeightSize} = sceneAnimationConfig
         this.ctx.canvas.width = document.documentElement.clientWidth * canvasWidthPercent
         this.ctx.canvas.height = canvasHeightSize
         this.sprite.src = spriteSheetPath
+        this.player.setPosition(sceneAnimationConfig.playerDefaultPosition[0], sceneAnimationConfig.playerDefaultPosition[1])
     }
-    // initGrassLand() {
-    //     return new Promise((resolve, reject) => {
-    //         const tilexSize = 16
-    //         const tileySize = 16
-    //         const maxOffset = 6
-    //         for (let i=0;i<70;i++) {
-    //             for (let j=0;j<40;j++) {
-    //                 const xOffset = (Math.random() * maxOffset - maxOffset / 2)
-    //                 const yOffset = (Math.random() * maxOffset - maxOffset / 2)
-    //                 const xPos = Math.floor(tilexSize * i + xOffset) + 0.5
-    //                 const yPos = Math.floor(tileySize * j + yOffset) + 0.5
-    //                 this.ctx.drawImage(this.sprite, 0, 111, tilexSize, tileySize, xPos, yPos, tilexSize, tileySize)
-    //             }
-    //         }
-    //         resolve(1)
-    //     })
-    // }
-    // initTrees(amount: number) {
-    //     const treePosx = 50
-    //     const treePosy = 0
-    //     return new Promise((resolve, reject) => {
-    //         for (let i=0;i<amount;i++) {
-    //             this.ctx.drawImage(this.sprite, treePosx, treePosy, 50, 96, Math.random() * this.ctx.canvas.width, Math.random() * this.ctx.canvas.height, 50, 96)
-    //         }
-    //         resolve(1)
-    //     })
-    // }
     renderScreen()  {
         // this.ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)
         // this.sprite.onload = async () => {
@@ -55,34 +48,53 @@ class sceneAnimation {
         // this.ctx.fillRect(0, 0, this.ctx.canvas.width,  this.ctx.canvas.height)
 
         this.ctx.clearRect(0,0, this.ctx.canvas.width,  this.ctx.canvas.height)
-        // this.sprite.onload = () => {
-            this.ctx.drawImage(this.sprite, this.scenePosx, this.scenePosy)
-        // }
+        this.ctx.drawImage(this.sprite, 0, 0)
+        this.ctx.drawImage(this.player.sprite, 0, 0, 80, 120, this.player.posx, this.player.posy, 80*this.player.scaleFactor, 120*this.player.scaleFactor)
         requestAnimationFrame(this.renderScreen.bind(this))
     }
-    goUp() { this.scenePosy-=5 }
-    goDown() { this.scenePosy+=5 }
-    goLeft() { this.scenePosx-=5 }
-    goRight() { this.scenePosx+=5 }
-    enableCameraMovement() {
-            window.addEventListener("keypress", (e) => {
-                switch (e.key) {
-                    case 'w':
-                        this.goUp()
-                        break;
-                    case 'a':
-                        this.goLeft()
-                        break;
-                    case 's':
-                        this.goDown()
-                        break;
-                    case 'd':
-                        this.goRight()
-                        break;
-                    default:
-                        break;
-                }
-            })
+    makePlayerMove() {
+        const keysPressed = new Map();
+        const handleKeyDown = (e: KeyboardEvent) => {
+            keysPressed.set(e.key, true);
+            if (keysPressed.get("w")) {
+                this.player.goUp();
+            }
+            if (keysPressed.get("a")) {
+                this.player.goLeft();
+            }
+            if (keysPressed.get("s")) {
+                this.player.goDown();
+            }
+            if (keysPressed.get("d")) {
+                this.player.goRight();
+            }
+        };
+
+        const handleKeyUp = (e : KeyboardEvent) => {
+            keysPressed.set(e.key, false);
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        window.addEventListener("keyup", handleKeyUp);
+
+        // window.addEventListener("keypress", (e) => {
+        //     switch (e.key) {
+        //         case 'w':
+        //             this.player.goUp()
+        //             break;
+        //         case 'a':
+        //             this.player.goLeft()
+        //             break;
+        //         case 's':
+        //             this.player.goDown()
+        //             break;
+        //         case 'd':
+        //             this.player.goRight()
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        // })
     }
 }
 
@@ -116,7 +128,7 @@ function Frame() {
             SceneAnimation = new sceneAnimation(context)
             SceneAnimation.initSceneConfig()
             SceneAnimation.renderScreen()
-            SceneAnimation.enableCameraMovement()
+            SceneAnimation.makePlayerMove()
         }
     })
 
