@@ -1,9 +1,9 @@
-const listItems = [{name: "PERSONAL INFO", isCurrentItem: true}, {name: "TOOLS", isCurrentItem: false}, {name: "CONTACT", isCurrentItem: false}]
+import topBarItems from '@/data/headerItems'
 function Header() {
   return (
     <>
-      <nav className="absolute w-full top-0 left-0 bg-blue-900">
-        <div className="container flex flex-wrap items-center justify-start mx-auto">
+      <nav className="absolute w-full top-0 left-0 bar">
+        <div className="flex flex-wrap items-center justify-start mx-auto">
           <button
             data-collapse-toggle="navbar-default"
             type="button"
@@ -25,7 +25,7 @@ function Header() {
           </button>
           <div className="hidden w-full md:block md:w-auto" id="navbar-default">
             <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0">
-                {listItems.map(item => 
+                {topBarItems.map(item => 
                     <li key={item.name}><a href="#" className="block text-white py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 md:dark:hover:text-white">{item.name}</a></li>
                 )}
 

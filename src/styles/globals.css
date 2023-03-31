@@ -4,6 +4,10 @@
 
 :root {
     --bodyHeight: 1500px;
+    --barColor: rgba(21, 71, 148, 1);
+}
+.bar {
+    background-color: var(--barColor);
 }
 
 .body {
