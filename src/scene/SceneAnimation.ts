@@ -1,5 +1,5 @@
-import Player from './Player'
 import sceneAnimationConfig from '@/data/sceneAnimationConfig'
+import Player from './Player'
 
 class sceneAnimation {
     ctx : CanvasRenderingContext2D

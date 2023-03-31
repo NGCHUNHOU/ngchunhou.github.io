@@ -1,6 +1,6 @@
 import {useRef, useEffect} from 'react'
 import sceneAnimationConfig from '@/data/sceneAnimationConfig'
-import sceneAnimation from './SceneAnimation'
+import sceneAnimation from '@/scene/SceneAnimation'
 
 function getWidthClassName() {
     const canvasWidthPercent : number = sceneAnimationConfig.canvasWidthPercent
