@@ -4,8 +4,8 @@ enum direction {
     horizontal = 2
 }
 class Player {
-    leftOffset : number = 10
-    frameWidth = 69
+    leftOffset : number = 15
+    frameWidth = 65
     frameHeight = 130
     currentFramePosX : number = 0
     currentFramePosY : number = 0
@@ -19,9 +19,7 @@ class Player {
         this.scaleFactor = sceneAnimationConfig.playerScaleFactor
     }
     getFrameWidth(): number {
-        if (this.currentFramePosX < 2)
-            return this.leftOffset + (this.currentFramePosX * this.frameWidth)
-        return (this.currentFramePosX * this.frameWidth)
+        return this.leftOffset + (this.currentFramePosX * this.frameWidth)
     }
     getFrameHeight(): number {
         return (this.currentFramePosY * this.frameHeight)
