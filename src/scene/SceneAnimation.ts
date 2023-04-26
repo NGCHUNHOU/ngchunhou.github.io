@@ -1,17 +1,15 @@
 import sceneAnimationConfig from '@/data/sceneAnimationConfig'
 import Player from './Player'
-import Collisions from './Collisions'
+import TileObjects from './TileObjects'
 
 class sceneAnimation {
     ctx : CanvasRenderingContext2D
     sprite : HTMLImageElement
     player : Player
-    collisions : Collisions
     constructor(ctx : CanvasRenderingContext2D) {
         this.ctx = ctx
         this.sprite = new Image()
         this.player = new Player(sceneAnimationConfig.playerSheetPath)
-        this.collisions = new Collisions()
     }
     initSceneConfig() {
         const {backgroundSheetPath, backgroundLargeSheetPath, backgroundSmallSheetPath, canvasWidthPercent, canvasHeightSize} = sceneAnimationConfig
@@ -27,8 +25,11 @@ class sceneAnimation {
         }
         if (document.documentElement.clientWidth <= 768) {
             this.sprite.src = backgroundSmallSheetPath
-            this.ctx.canvas.height = this.sprite.height
-            this.player.scaleFactor -= 0.2
+            // ensure sprite is loading
+            this.sprite.onload = () => {
+                this.ctx.canvas.height = this.sprite.height
+                this.player.scaleFactor -= 0.2
+            }
         }
         this.player.setPosition(sceneAnimationConfig.playerDefaultPosition[0], sceneAnimationConfig.playerDefaultPosition[1])
     }
@@ -48,6 +49,8 @@ class sceneAnimation {
         // this.ctx.drawImage(this.player.sprite, 0, 0, 80, 120, this.player.posx, this.player.posy, 80*this.player.scaleFactor, 120*this.player.scaleFactor)
         // this.ctx.drawImage(this.player.sprite, this.player.getFrameWidth(), 0, 66, 120, this.player.posx, this.player.posy, 80*this.player.scaleFactor, 120*this.player.scaleFactor)
         this.ctx.drawImage(this.player.sprite, this.player.getFrameWidth(), this.player.getFrameHeight(), 66, 120, this.player.posx, this.player.posy, 80*this.player.scaleFactor, 120*this.player.scaleFactor)
+        TileObjects.tileInfo.getResizedTileSize(this.ctx)
+        TileObjects.fences.draw(this.ctx)
         requestAnimationFrame(this.renderScreen.bind(this))
     }
     makePlayerMove() {

@@ -8,6 +8,9 @@ let sceneAnimationConfig = {
     playerMoveSpeed: 6,
     playerDefaultPosition: [380, 300],
     canvasWidthPercent: 0.6,
-    canvasHeightSize: 600
+    canvasHeightSize: 600,
+    defaultTilesWidth: 50,
+    defaultTilesHeight: 40,
+    defaultTileWidthHeight: 8 
 }
 export default sceneAnimationConfig
