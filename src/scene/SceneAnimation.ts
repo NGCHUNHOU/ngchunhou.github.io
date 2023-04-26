@@ -1,14 +1,17 @@
 import sceneAnimationConfig from '@/data/sceneAnimationConfig'
 import Player from './Player'
+import Collisions from './Collisions'
 
 class sceneAnimation {
     ctx : CanvasRenderingContext2D
     sprite : HTMLImageElement
     player : Player
+    collisions : Collisions
     constructor(ctx : CanvasRenderingContext2D) {
         this.ctx = ctx
         this.sprite = new Image()
         this.player = new Player(sceneAnimationConfig.playerSheetPath)
+        this.collisions = new Collisions()
     }
     initSceneConfig() {
         const {backgroundSheetPath, backgroundLargeSheetPath, backgroundSmallSheetPath, canvasWidthPercent, canvasHeightSize} = sceneAnimationConfig
@@ -52,13 +55,29 @@ class sceneAnimation {
         const handleKeyDown = (e: KeyboardEvent) => {
             keysPressed.set(e.key, true);
             if (keysPressed.get("w")) {
+                if (keysPressed.get("a")) {
+                    this.player.goUpLeft();
+                    return
+                }
+                if (keysPressed.get("d")) {
+                    this.player.goUpRight();
+                    return
+                }
                 this.player.goUp();
+            }
+            if (keysPressed.get("s")) {
+                if (keysPressed.get("a")) {
+                    this.player.goDownLeft();
+                    return
+                }
+                if (keysPressed.get("d")) {
+                    this.player.goDownRight();
+                    return
+                }
+                this.player.goDown();
             }
             if (keysPressed.get("a")) {
                 this.player.goLeft();
-            }
-            if (keysPressed.get("s")) {
-                this.player.goDown();
             }
             if (keysPressed.get("d")) {
                 this.player.goRight();

@@ -45,9 +45,33 @@ class Player {
         this.posy-=sceneAnimationConfig.playerMoveSpeed 
         this.move(direction.vertical)
     }
+    goUpLeft() { 
+        this.currentFramePosY = 3
+        this.posy-=sceneAnimationConfig.playerMoveSpeed 
+        this.posx-=sceneAnimationConfig.playerMoveSpeed 
+        this.move(direction.vertical)
+    }
+    goUpRight() { 
+        this.currentFramePosY = 1
+        this.posy-=sceneAnimationConfig.playerMoveSpeed 
+        this.posx+=sceneAnimationConfig.playerMoveSpeed 
+        this.move(direction.vertical)
+    }
     goDown() { 
         this.currentFramePosY = 0
         this.posy+=sceneAnimationConfig.playerMoveSpeed
+        this.move(direction.vertical)
+    }
+    goDownLeft() { 
+        this.currentFramePosY = 3
+        this.posy+=sceneAnimationConfig.playerMoveSpeed
+        this.posx-=sceneAnimationConfig.playerMoveSpeed 
+        this.move(direction.vertical)
+    }
+    goDownRight() { 
+        this.currentFramePosY = 1
+        this.posy+=sceneAnimationConfig.playerMoveSpeed
+        this.posx+=sceneAnimationConfig.playerMoveSpeed 
         this.move(direction.vertical)
     }
     goLeft() { 
