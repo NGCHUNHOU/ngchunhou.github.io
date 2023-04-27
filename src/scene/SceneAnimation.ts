@@ -31,6 +31,7 @@ class sceneAnimation {
                 this.player.scaleFactor -= 0.2
             }
         }
+        TileObjects.tileInfo.getResizedTileSize(this.ctx)
         this.player.setPosition(sceneAnimationConfig.playerDefaultPosition[0], sceneAnimationConfig.playerDefaultPosition[1])
     }
     renderScreen()  {
@@ -49,7 +50,6 @@ class sceneAnimation {
         // this.ctx.drawImage(this.player.sprite, 0, 0, 80, 120, this.player.posx, this.player.posy, 80*this.player.scaleFactor, 120*this.player.scaleFactor)
         // this.ctx.drawImage(this.player.sprite, this.player.getFrameWidth(), 0, 66, 120, this.player.posx, this.player.posy, 80*this.player.scaleFactor, 120*this.player.scaleFactor)
         this.ctx.drawImage(this.player.sprite, this.player.getFrameWidth(), this.player.getFrameHeight(), 66, 120, this.player.posx, this.player.posy, 80*this.player.scaleFactor, 120*this.player.scaleFactor)
-        TileObjects.tileInfo.getResizedTileSize(this.ctx)
         TileObjects.fences.draw(this.ctx)
         requestAnimationFrame(this.renderScreen.bind(this))
     }
