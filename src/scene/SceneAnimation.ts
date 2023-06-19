@@ -50,40 +50,89 @@ class sceneAnimation {
         // this.ctx.drawImage(this.player.sprite, 0, 0, 80, 120, this.player.posx, this.player.posy, 80*this.player.scaleFactor, 120*this.player.scaleFactor)
         // this.ctx.drawImage(this.player.sprite, this.player.getFrameWidth(), 0, 66, 120, this.player.posx, this.player.posy, 80*this.player.scaleFactor, 120*this.player.scaleFactor)
         this.ctx.drawImage(this.player.sprite, this.player.getFrameWidth(), this.player.getFrameHeight(), 66, 120, this.player.posx, this.player.posy, 80*this.player.scaleFactor, 120*this.player.scaleFactor)
-        TileObjects.fences.draw(this.ctx)
+        // TileObjects.fences.draw(this.ctx)
         requestAnimationFrame(this.renderScreen.bind(this))
     }
     makePlayerMove() {
+        this.player.setTilePosition(this.ctx.canvas)
         const keysPressed = new Map();
+
         const handleKeyDown = (e: KeyboardEvent) => {
+            this.player.setTilePosition(this.ctx.canvas)
             keysPressed.set(e.key, true);
+            const playerXVisionStart = Math.abs(this.player.currentTilePos[0] - 1)
+            const playerXVisionEnd = Math.abs(this.player.currentTilePos[0] + 1)
+            const playerYVisionStart = Math.abs(this.player.currentTilePos[1] - 1)
+            const playerYVisionEnd = Math.abs(this.player.currentTilePos[1] + 1)
+            let isPlayerTopBlocked = false
+            let isPlayerBottomBlocked = false
+            let isPlayerLeftBlocked = false
+            let isPlayerRightBlocked = false
+            for (let i=playerXVisionStart;i<playerXVisionEnd;i++) {
+                const topBlocks = TileObjects.fences.twoD_tilesMap[playerYVisionStart][i]
+                const bottomBlocks = TileObjects.fences.twoD_tilesMap[playerYVisionEnd][i]
+                if (topBlocks != 0)
+                    isPlayerTopBlocked = true
+                else 
+                    isPlayerTopBlocked = false
+                if (bottomBlocks != 0)
+                    isPlayerBottomBlocked = true
+                else 
+                    isPlayerBottomBlocked = false
+            }
+            for (let j=playerYVisionStart;j<playerYVisionEnd;j++) {
+                const leftBlocks = TileObjects.fences.twoD_tilesMap[j][playerXVisionStart]
+                const RightBlocks = TileObjects.fences.twoD_tilesMap[j][playerXVisionEnd]
+                if (leftBlocks != 0)
+                    isPlayerLeftBlocked = true
+                else 
+                    isPlayerLeftBlocked = false
+                if (RightBlocks != 0)
+                    isPlayerRightBlocked = true
+                else 
+                    isPlayerRightBlocked = false
+            }
+
+            // console.log("isPlayerTopBlocked", isPlayerTopBlocked)
+            // console.log("isPlayerBottomBlocked", isPlayerBottomBlocked)
+            // console.log("isPlayerLeftBlocked", isPlayerLeftBlocked)
+            // console.log("isPlayerRightBlocked", isPlayerRightBlocked)
+
             if (keysPressed.get("w")) {
                 if (keysPressed.get("a")) {
-                    this.player.goUpLeft();
+                    if (!isPlayerTopBlocked)
+                        this.player.goUpLeft();
                     return
                 }
                 if (keysPressed.get("d")) {
-                    this.player.goUpRight();
+                    if (!isPlayerTopBlocked)
+                        this.player.goUpRight();
                     return
                 }
-                this.player.goUp();
+                if (!isPlayerTopBlocked)
+                    this.player.goUp();
             }
             if (keysPressed.get("s")) {
                 if (keysPressed.get("a")) {
-                    this.player.goDownLeft();
+                    if (!isPlayerBottomBlocked)
+                        this.player.goDownLeft();
                     return
                 }
                 if (keysPressed.get("d")) {
-                    this.player.goDownRight();
+                    if (!isPlayerBottomBlocked)
+                        this.player.goDownRight();
                     return
                 }
-                this.player.goDown();
+                if (!isPlayerBottomBlocked)
+                    this.player.goDown();
             }
             if (keysPressed.get("a")) {
-                this.player.goLeft();
+                if (!isPlayerLeftBlocked)
+                    this.player.goLeft();
             }
             if (keysPressed.get("d")) {
-                this.player.goRight();
+                if (!isPlayerRightBlocked)
+                    this.player.goRight();
             }
         };
 

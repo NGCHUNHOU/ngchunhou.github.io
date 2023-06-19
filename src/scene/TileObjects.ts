@@ -40,8 +40,8 @@ class Fence implements ITileObject {
         console.log(this.twoD_tilesMap)
     }
     draw(ctx : CanvasRenderingContext2D) {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.0)'
-        // debug ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'
+        // ctx.fillStyle = 'rgba(0, 0, 0, 0.0)'
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'
         // to do: collision setup, tiles size and position calculation... rough done
         // to do: optimize build collision steps
         for (let i=0;i<this.twoD_tilesMap.length;i++) {

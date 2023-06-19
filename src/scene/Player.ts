@@ -9,6 +9,7 @@ class Player {
     frameHeight = 130
     currentFramePosX : number = 0
     currentFramePosY : number = 0
+    currentTilePos: number[] = [0,0]
     posx : number = 0
     posy : number = 0
     scaleFactor : number = 0
@@ -27,6 +28,16 @@ class Player {
     setPosition(posx : number, posy : number) {
         this.posx = posx
         this.posy = posy
+    }
+    setTilePosition(ctx : HTMLCanvasElement) {
+        if (!this.posx || !this.posy)
+            return false
+        
+        const xunit = Math.round(ctx.width / sceneAnimationConfig.defaultTilesWidth)
+        const yunit = Math.round(ctx.height / sceneAnimationConfig.defaultTilesHeight)
+        this.currentTilePos[0] = Math.floor(this.posx / xunit)
+        this.currentTilePos[1] = Math.floor(this.posy / yunit)
+        return true
     }
     move(direction: number) {
         let movePosition = 0
