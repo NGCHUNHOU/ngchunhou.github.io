@@ -7,6 +7,8 @@ class Player {
     leftOffset : number = 15
     frameWidth = 65
     frameHeight = 130
+    widthSizeInCanvas: number = sceneAnimationConfig.playerSizeInCanvas[0]
+    heightSizeInCanvas: number = sceneAnimationConfig.playerSizeInCanvas[1]
     currentFramePosX : number = 0
     currentFramePosY : number = 0
     currentTilePos: number[] = [0,0]
@@ -24,6 +26,12 @@ class Player {
     }
     getFrameHeight(): number {
         return (this.currentFramePosY * this.frameHeight)
+    }
+    getPlayerPosX(): number {
+        return (this.posx - (this.widthSizeInCanvas / 2))
+    }
+    getPlayerPosY(): number {
+        return (this.posy - (this.heightSizeInCanvas / 2))
     }
     setPosition(posx : number, posy : number) {
         this.posx = posx

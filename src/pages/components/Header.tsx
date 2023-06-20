@@ -2,7 +2,7 @@ import topBarItems from '@/data/headerItems'
 function Header() {
   return (
     <>
-      <nav className="absolute w-full top-0 left-0 bar">
+      <nav className="absolute w-full top-0 left-0 bar" id="mainHeaderNavBar">
         <div className="flex flex-wrap items-center justify-start mx-auto">
           <button
             data-collapse-toggle="navbar-default"

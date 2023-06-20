@@ -37,7 +37,7 @@ class Fence implements ITileObject {
     initTilesMap() : void {
         // reshape linear array to 2d array
         this.twoD_tilesMap = Tile.arrayReshapeByTilesWidth(tilesMap.data)
-        console.log(this.twoD_tilesMap)
+        // console.log(this.twoD_tilesMap)
     }
     draw(ctx : CanvasRenderingContext2D) {
         // ctx.fillStyle = 'rgba(0, 0, 0, 0.0)'

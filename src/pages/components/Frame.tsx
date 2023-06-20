@@ -40,7 +40,7 @@ function Frame() {
         <>
             <div id="mainFrame" className="absolute top-20 w-full">
                 <div className={`${canvasWidthClassName} mx-auto ring ring-green-800 rounded`}>
-                    <canvas ref={sceneAnimationRef} id="sceneAnimation"></canvas>
+                    <canvas ref={sceneAnimationRef} id="sceneAnimation" className="w-full"></canvas>
                 </div>
             </div>
         </>

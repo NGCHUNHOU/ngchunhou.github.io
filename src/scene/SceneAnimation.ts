@@ -14,23 +14,31 @@ class sceneAnimation {
     initSceneConfig() {
         const {backgroundSheetPath, backgroundLargeSheetPath, backgroundSmallSheetPath, canvasWidthPercent, canvasHeightSize} = sceneAnimationConfig
         this.ctx.canvas.width = document.documentElement.clientWidth * canvasWidthPercent
-        if (document.documentElement.clientWidth > 1366 && document.documentElement.clientWidth <= 1920) {
-            this.sprite.src = backgroundLargeSheetPath
-            this.ctx.canvas.height = canvasHeightSize
-            this.player.scaleFactor += 0.2
+
+        this.sprite.src = backgroundSheetPath
+        this.sprite.onload = () => {
+            this.ctx.canvas.width = this.sprite.width
+            this.ctx.canvas.height = this.sprite.height
         }
-        if (document.documentElement.clientWidth > 768 && document.documentElement.clientWidth <= 1366) {
-            this.sprite.src = backgroundSheetPath
-            this.ctx.canvas.height = canvasHeightSize
-        }
-        if (document.documentElement.clientWidth <= 768) {
-            this.sprite.src = backgroundSmallSheetPath
-            // ensure sprite is loading
-            this.sprite.onload = () => {
-                this.ctx.canvas.height = this.sprite.height
-                this.player.scaleFactor -= 0.2
-            }
-        }
+        // if (document.documentElement.clientWidth > 1366 && document.documentElement.clientWidth <= 1920) {
+        //     this.sprite.src = backgroundLargeSheetPath
+            // this.ctx.canvas.width = 1750
+            // this.ctx.canvas.height = 1400
+        //     this.player.scaleFactor += 0.2
+        // }
+        // if (document.documentElement.clientWidth > 768 && document.documentElement.clientWidth <= 1366) {
+        //      this.sprite.src = backgroundSheetPath
+        //      this.ctx.canvas.height = canvasHeightSize
+        // }
+        // if (document.documentElement.clientWidth <= 768) {
+        //     this.sprite.src = backgroundSmallSheetPath
+        //     // ensure sprite is loading
+        //     this.sprite.onload = () => {
+        //         this.ctx.canvas.width = this.sprite.width
+        //         this.ctx.canvas.height = this.sprite.height
+        //         this.player.scaleFactor -= 0.2
+        //     }
+        // }
         TileObjects.tileInfo.getResizedTileSize(this.ctx)
         this.player.setPosition(sceneAnimationConfig.playerDefaultPosition[0], sceneAnimationConfig.playerDefaultPosition[1])
     }
@@ -46,10 +54,10 @@ class sceneAnimation {
         // this.ctx.fillRect(0, 0, this.ctx.canvas.width,  this.ctx.canvas.height)
 
         this.ctx.clearRect(0,0, this.ctx.canvas.width,  this.ctx.canvas.height)
-        this.ctx.drawImage(this.sprite, 0, 0)
+        this.ctx.drawImage(this.sprite, 0, 0, this.sprite.width, this.sprite.height)
         // this.ctx.drawImage(this.player.sprite, 0, 0, 80, 120, this.player.posx, this.player.posy, 80*this.player.scaleFactor, 120*this.player.scaleFactor)
         // this.ctx.drawImage(this.player.sprite, this.player.getFrameWidth(), 0, 66, 120, this.player.posx, this.player.posy, 80*this.player.scaleFactor, 120*this.player.scaleFactor)
-        this.ctx.drawImage(this.player.sprite, this.player.getFrameWidth(), this.player.getFrameHeight(), 66, 120, this.player.posx, this.player.posy, 80*this.player.scaleFactor, 120*this.player.scaleFactor)
+        this.ctx.drawImage(this.player.sprite, this.player.getFrameWidth(), this.player.getFrameHeight(), this.player.widthSizeInCanvas, this.player.heightSizeInCanvas, this.player.getPlayerPosX(), this.player.getPlayerPosY(), 80*this.player.scaleFactor, 120*this.player.scaleFactor)
         // TileObjects.fences.draw(this.ctx)
         requestAnimationFrame(this.renderScreen.bind(this))
     }
@@ -68,31 +76,23 @@ class sceneAnimation {
             let isPlayerBottomBlocked = false
             let isPlayerLeftBlocked = false
             let isPlayerRightBlocked = false
-            for (let i=playerXVisionStart;i<playerXVisionEnd;i++) {
-                const topBlocks = TileObjects.fences.twoD_tilesMap[playerYVisionStart][i]
-                const bottomBlocks = TileObjects.fences.twoD_tilesMap[playerYVisionEnd][i]
-                if (topBlocks != 0)
-                    isPlayerTopBlocked = true
-                else 
-                    isPlayerTopBlocked = false
-                if (bottomBlocks != 0)
-                    isPlayerBottomBlocked = true
-                else 
-                    isPlayerBottomBlocked = false
-            }
-            for (let j=playerYVisionStart;j<playerYVisionEnd;j++) {
-                const leftBlocks = TileObjects.fences.twoD_tilesMap[j][playerXVisionStart]
-                const RightBlocks = TileObjects.fences.twoD_tilesMap[j][playerXVisionEnd]
-                if (leftBlocks != 0)
-                    isPlayerLeftBlocked = true
-                else 
-                    isPlayerLeftBlocked = false
-                if (RightBlocks != 0)
-                    isPlayerRightBlocked = true
-                else 
-                    isPlayerRightBlocked = false
-            }
+            const topBlock = TileObjects.fences.twoD_tilesMap[playerYVisionStart][playerXVisionStart+1]
+            const bottomBlock = TileObjects.fences.twoD_tilesMap[playerYVisionEnd][playerXVisionStart+1]
+            const leftBlock = TileObjects.fences.twoD_tilesMap[playerYVisionStart+1][playerXVisionStart]
+            const rightBlock = TileObjects.fences.twoD_tilesMap[playerYVisionStart+1][playerXVisionEnd]
+            if (topBlock != 0)
+                isPlayerTopBlocked = true
+            if (bottomBlock != 0)
+                isPlayerBottomBlocked = true
+            if (leftBlock != 0)
+                isPlayerLeftBlocked = true
+            if (rightBlock != 0)
+                isPlayerRightBlocked = true
 
+            // console.log("playerXVisionStart", playerXVisionStart)
+            // console.log("playerXVisionEnd", playerXVisionEnd)
+            // console.log("playerYVisionStart", playerYVisionStart)
+            // console.log("playerYVisionEnd", playerYVisionEnd)
             // console.log("isPlayerTopBlocked", isPlayerTopBlocked)
             // console.log("isPlayerBottomBlocked", isPlayerBottomBlocked)
             // console.log("isPlayerLeftBlocked", isPlayerLeftBlocked)
