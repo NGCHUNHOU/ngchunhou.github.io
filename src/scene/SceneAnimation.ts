@@ -76,10 +76,10 @@ class sceneAnimation {
             let isPlayerBottomBlocked = false
             let isPlayerLeftBlocked = false
             let isPlayerRightBlocked = false
-            const topBlock = TileObjects.fences.twoD_tilesMap[playerYVisionStart][playerXVisionStart+1]
-            const bottomBlock = TileObjects.fences.twoD_tilesMap[playerYVisionEnd][playerXVisionStart+1]
-            const leftBlock = TileObjects.fences.twoD_tilesMap[playerYVisionStart+1][playerXVisionStart]
-            const rightBlock = TileObjects.fences.twoD_tilesMap[playerYVisionStart+1][playerXVisionEnd]
+            const topBlock = TileObjects.collision.twoD_tilesMap[playerYVisionStart][playerXVisionStart+1]
+            const bottomBlock = TileObjects.collision.twoD_tilesMap[playerYVisionEnd][playerXVisionStart+1]
+            const leftBlock = TileObjects.collision.twoD_tilesMap[playerYVisionStart+1][playerXVisionStart]
+            const rightBlock = TileObjects.collision.twoD_tilesMap[playerYVisionStart+1][playerXVisionEnd]
             if (topBlock != 0)
                 isPlayerTopBlocked = true
             if (bottomBlock != 0)

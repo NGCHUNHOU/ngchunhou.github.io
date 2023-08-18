@@ -27,7 +27,7 @@ class Tile {
     }
 }
 
-class Fence implements ITileObject {
+class Collision implements ITileObject {
     tilesMap : number[][] = [[]]
     // debug property
     twoD_tilesMap : number[][] = [[]]
@@ -58,6 +58,6 @@ class Fence implements ITileObject {
 
 const TileObjects = {
     tileInfo: Tile,
-    fences: new Fence()
+    collision: new Collision()
 }
 export default TileObjects
