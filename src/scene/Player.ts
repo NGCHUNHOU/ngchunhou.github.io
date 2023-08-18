@@ -28,7 +28,7 @@ class Player {
         return (this.currentFramePosY * this.frameHeight)
     }
     getPlayerPosX(): number {
-        return (this.posx - (this.widthSizeInCanvas / 2))
+        return (this.posx - (this.widthSizeInCanvas / 3))
     }
     getPlayerPosY(): number {
         return (this.posy - (this.heightSizeInCanvas / 2))
