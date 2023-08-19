@@ -68,27 +68,30 @@ class sceneAnimation {
         const handleKeyDown = (e: KeyboardEvent) => {
             this.player.setTilePosition(this.ctx.canvas)
             keysPressed.set(e.key, true);
-            const playerXVisionStart = Math.abs(this.player.currentTilePos[0] - 1)
-            const playerXVisionEnd = Math.abs(this.player.currentTilePos[0] + 1)
-            const playerYVisionStart = Math.abs(this.player.currentTilePos[1] - 1)
-            const playerYVisionEnd = Math.abs(this.player.currentTilePos[1] + 1)
+            const playerXVisionStart = Math.round(this.player.currentTilePos[0] - 1)
+            const playerXVisionEnd = Math.round(this.player.currentTilePos[0] + 1)
+            const playerYVisionStart = Math.round(this.player.currentTilePos[1] - 1)
+            const playerYVisionEnd = Math.round(this.player.currentTilePos[1] + 1)
+
             let isPlayerTopBlocked = false
             let isPlayerBottomBlocked = false
             let isPlayerLeftBlocked = false
             let isPlayerRightBlocked = false
+
             const topBlock = TileObjects.collision.twoD_tilesMap[playerYVisionStart][playerXVisionStart+1]
             const bottomBlock = TileObjects.collision.twoD_tilesMap[playerYVisionEnd][playerXVisionStart+1]
             const leftBlock = TileObjects.collision.twoD_tilesMap[playerYVisionStart+1][playerXVisionStart]
             const rightBlock = TileObjects.collision.twoD_tilesMap[playerYVisionStart+1][playerXVisionEnd]
-            if (topBlock != 0)
+            if (topBlock != 0 || playerYVisionStart == 0)
                 isPlayerTopBlocked = true
-            if (bottomBlock != 0)
+            if (bottomBlock != 0 || (playerYVisionEnd == sceneAnimationConfig.defaultTilesHeight - 1))
                 isPlayerBottomBlocked = true
-            if (leftBlock != 0)
+            if (leftBlock != 0 || playerXVisionStart == -1)
                 isPlayerLeftBlocked = true
-            if (rightBlock != 0)
+            if (rightBlock != 0 || (playerXVisionEnd == sceneAnimationConfig.defaultTilesWidth - 1))
                 isPlayerRightBlocked = true
 
+			// console.log("currentTilePosX;currentTilePosY", [this.player.currentTilePos[0], this.player.currentTilePos[1]])
             // console.log("playerXVisionStart", playerXVisionStart)
             // console.log("playerXVisionEnd", playerXVisionEnd)
             // console.log("playerYVisionStart", playerYVisionStart)

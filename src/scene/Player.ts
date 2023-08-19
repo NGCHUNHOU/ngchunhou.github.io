@@ -28,7 +28,7 @@ class Player {
         return (this.currentFramePosY * this.frameHeight)
     }
     getPlayerPosX(): number {
-        return (this.posx - (this.widthSizeInCanvas / 3))
+        return this.posx - 6
     }
     getPlayerPosY(): number {
         return (this.posy - (this.heightSizeInCanvas / 2))
@@ -41,10 +41,10 @@ class Player {
         if (!this.posx || !this.posy)
             return false
         
-        const xunit = Math.round(ctx.width / sceneAnimationConfig.defaultTilesWidth)
-        const yunit = Math.round(ctx.height / sceneAnimationConfig.defaultTilesHeight)
-        this.currentTilePos[0] = Math.floor(this.posx / xunit)
-        this.currentTilePos[1] = Math.floor(this.posy / yunit)
+        const xunit = ctx.width / sceneAnimationConfig.defaultTilesWidth
+        const yunit = ctx.height / sceneAnimationConfig.defaultTilesHeight
+        this.currentTilePos[0] = this.posx / xunit
+        this.currentTilePos[1] = this.posy / yunit
         return true
     }
     move(direction: number) {
