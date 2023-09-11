@@ -73,23 +73,23 @@ class sceneAnimation {
             const playerYVisionStart = Math.round(this.player.currentTilePos[1] - 1)
             const playerYVisionEnd = Math.round(this.player.currentTilePos[1] + 1)
 
-            let isPlayerTopBlocked = false
-            let isPlayerBottomBlocked = false
-            let isPlayerLeftBlocked = false
-            let isPlayerRightBlocked = false
-
             const topBlock = TileObjects.collision.twoD_tilesMap[playerYVisionStart][playerXVisionStart+1]
             const bottomBlock = TileObjects.collision.twoD_tilesMap[playerYVisionEnd][playerXVisionStart+1]
             const leftBlock = TileObjects.collision.twoD_tilesMap[playerYVisionStart+1][playerXVisionStart]
             const rightBlock = TileObjects.collision.twoD_tilesMap[playerYVisionStart+1][playerXVisionEnd]
-            if (topBlock != 0 || playerYVisionStart == 0)
-                isPlayerTopBlocked = true
-            if (bottomBlock != 0 || (playerYVisionEnd == sceneAnimationConfig.defaultTilesHeight - 1))
-                isPlayerBottomBlocked = true
-            if (leftBlock != 0 || playerXVisionStart == -1)
-                isPlayerLeftBlocked = true
-            if (rightBlock != 0 || (playerXVisionEnd == sceneAnimationConfig.defaultTilesWidth - 1))
-                isPlayerRightBlocked = true
+
+            if (topBlock != 0 || playerYVisionStart == 0) {
+                keysPressed.set('w', false)
+            }
+            if (bottomBlock != 0 || (playerYVisionEnd == sceneAnimationConfig.defaultTilesHeight - 1)) {
+                keysPressed.set('s', false)
+            }
+            if (leftBlock != 0 || playerXVisionStart == -1) {
+                keysPressed.set('a', false)
+            }
+            if (rightBlock != 0 || (playerXVisionEnd == sceneAnimationConfig.defaultTilesWidth - 1)) {
+                keysPressed.set('d', false)
+            }
 
 			// console.log("currentTilePosX;currentTilePosY", [this.player.currentTilePos[0], this.player.currentTilePos[1]])
             // console.log("playerXVisionStart", playerXVisionStart)
@@ -103,39 +103,31 @@ class sceneAnimation {
 
             if (keysPressed.get("w")) {
                 if (keysPressed.get("a")) {
-                    if (!isPlayerTopBlocked)
-                        this.player.goUpLeft();
+                    this.player.goUpLeft();
                     return
                 }
                 if (keysPressed.get("d")) {
-                    if (!isPlayerTopBlocked)
-                        this.player.goUpRight();
+                    this.player.goUpRight();
                     return
                 }
-                if (!isPlayerTopBlocked)
-                    this.player.goUp();
+                this.player.goUp();
             }
             if (keysPressed.get("s")) {
                 if (keysPressed.get("a")) {
-                    if (!isPlayerBottomBlocked)
-                        this.player.goDownLeft();
+                    this.player.goDownLeft();
                     return
                 }
                 if (keysPressed.get("d")) {
-                    if (!isPlayerBottomBlocked)
-                        this.player.goDownRight();
+                    this.player.goDownRight();
                     return
                 }
-                if (!isPlayerBottomBlocked)
-                    this.player.goDown();
+                this.player.goDown();
             }
             if (keysPressed.get("a")) {
-                if (!isPlayerLeftBlocked)
-                    this.player.goLeft();
+                this.player.goLeft();
             }
             if (keysPressed.get("d")) {
-                if (!isPlayerRightBlocked)
-                    this.player.goRight();
+                this.player.goRight();
             }
         };
 
