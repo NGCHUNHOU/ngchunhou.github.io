@@ -2,6 +2,8 @@ import {useRef, useEffect} from 'react'
 import sceneAnimationConfig from '@/data/sceneAnimationConfig'
 import sceneAnimation from '@/scene/SceneAnimation'
 
+let SceneAnimation = null
+
 function getWidthClassName() {
     const canvasWidthPercent : number = sceneAnimationConfig.canvasWidthPercent
     const tailwindClasses : {[key:string] : string} = {
@@ -26,7 +28,6 @@ function Frame() {
 
         let canvas = sceneAnimationRef.current
         let context = canvas.getContext("2d")
-        let SceneAnimation : sceneAnimation
 
         if (context != null) {
             SceneAnimation = new sceneAnimation(context)

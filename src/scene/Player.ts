@@ -15,6 +15,7 @@ class Player {
     posx : number = 0
     posy : number = 0
     scaleFactor : number = 0
+    keysPressed = new Map()
     sprite : HTMLImageElement
     constructor(spritePath : string) {
         this.sprite = new Image()
