@@ -32,7 +32,6 @@ function Frame() {
         if (context != null) {
             SceneAnimation = new sceneAnimation(context)
             SceneAnimation.initSceneConfig()
-            SceneAnimation.renderScreen()
             SceneAnimation.makePlayerMove()
         }
     })

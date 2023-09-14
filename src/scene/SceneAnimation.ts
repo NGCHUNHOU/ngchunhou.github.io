@@ -18,13 +18,14 @@ class sceneAnimation {
         this.sprite.src = backgroundSheetPath
 
         // temporarily use chronoValley8.png size without loading this.sprite. because this.player.setTilePosition() need canvas size to set player current tile position properly
-        this.ctx.canvas.width = 810
-        this.ctx.canvas.height = 648
+        // this.ctx.canvas.width = 810
+        // this.ctx.canvas.height = 648
 
-        // this.sprite.onload = () => {
-            // this.ctx.canvas.width = this.sprite.width
-            // this.ctx.canvas.height = this.sprite.height
-        // }
+        this.sprite.onload = () => {
+            this.ctx.canvas.width = this.sprite.width
+            this.ctx.canvas.height = this.sprite.height
+            this.renderScreen()
+        }
         // if (document.documentElement.clientWidth > 1366 && document.documentElement.clientWidth <= 1920) {
         //     this.sprite.src = backgroundLargeSheetPath
             // this.ctx.canvas.width = 1750
