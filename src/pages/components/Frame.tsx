@@ -1,8 +1,9 @@
 import {useRef, useEffect} from 'react'
 import sceneAnimationConfig from '@/data/sceneAnimationConfig'
-import sceneAnimation from '@/scene/SceneAnimation'
+import {userInterfaceScene, sceneAnimation, ISceneAnimation}from '@/scene/SceneAnimation'
 
 let SceneAnimation = null
+let UiAnimation = null
 
 function getWidthClassName() {
     const canvasWidthPercent : number = sceneAnimationConfig.canvasWidthPercent
@@ -20,26 +21,22 @@ function getWidthClassName() {
 
 function Frame() {
     const sceneAnimationRef = useRef<HTMLCanvasElement>(null)
+    const userInterfaceRef = useRef<HTMLCanvasElement>(null)
     const canvasWidthClassName = getWidthClassName()
 
     useEffect(() => {
-        if (!sceneAnimationRef.current)
-            throw new Error("failed to get target canvas to render animation")
-
-        let canvas = sceneAnimationRef.current
-        let context = canvas.getContext("2d")
-
-        if (context != null) {
-            SceneAnimation = new sceneAnimation(context)
-            SceneAnimation.initSceneConfig()
-            SceneAnimation.makePlayerMove()
-        }
+        SceneAnimation = new sceneAnimation(sceneAnimationRef);
+        UiAnimation = new userInterfaceScene(userInterfaceRef);
+        [SceneAnimation, UiAnimation].forEach((animation) => {
+            animation.startAnimation()
+        })
     })
 
     return (
         <>
             <div id="mainFrame" className="absolute top-20 w-full">
-                <div className={`${canvasWidthClassName} mx-auto ring ring-green-800 rounded`}>
+                <div className={`${canvasWidthClassName} mx-auto ring ring-green-800 rounded relative`}>
+                    <canvas ref={userInterfaceRef} id="userInterface" className="w-full absolute"></canvas>
                     <canvas ref={sceneAnimationRef} id="sceneAnimation" className="w-full"></canvas>
                 </div>
             </div>
