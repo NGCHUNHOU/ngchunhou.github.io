@@ -2,8 +2,8 @@ import {useRef, useEffect} from 'react'
 import sceneAnimationConfig from '@/data/sceneAnimationConfig'
 import {userInterfaceScene, sceneAnimation, ISceneAnimation}from '@/scene/SceneAnimation'
 
-let SceneAnimation = null
-let UiAnimation = null
+let SceneAnimation: sceneAnimation | null = null
+let UiAnimation: userInterfaceScene | null = null
 
 function getWidthClassName() {
     const canvasWidthPercent : number = sceneAnimationConfig.canvasWidthPercent
@@ -27,9 +27,29 @@ function Frame() {
     useEffect(() => {
         SceneAnimation = new sceneAnimation(sceneAnimationRef);
         UiAnimation = new userInterfaceScene(userInterfaceRef);
-        [SceneAnimation, UiAnimation].forEach((animation) => {
-            animation.startAnimation()
-        })
+        SceneAnimation.sprite = new Image()
+        SceneAnimation.sprite.src = sceneAnimationConfig.backgroundSheetPath
+
+        SceneAnimation.sprite.onload = () => {
+            if (SceneAnimation !== null) {
+                if (SceneAnimation.ctx !== null) {
+                    SceneAnimation.ctx.canvas.width = SceneAnimation.sprite.width;
+                    SceneAnimation.ctx.canvas.height = SceneAnimation.sprite.height;
+                }
+                if (UiAnimation !== null) {
+                    if (UiAnimation.ctx != null) {
+                        UiAnimation.ctx.canvas.width = SceneAnimation.sprite.width;
+                        UiAnimation.ctx.canvas.height = SceneAnimation.sprite.height;
+                    }
+                }
+                [SceneAnimation, UiAnimation].forEach((animation) => {
+                    if (animation !== null)
+                        animation.startAnimation()
+                })
+                SceneAnimation.renderScreen()
+            }
+        }
+
     })
 
     return (

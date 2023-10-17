@@ -17,15 +17,12 @@ class userInterfaceScene implements ISceneAnimation {
             this.ctx = context
     }
     startAnimation() {
-        // let waitUntilCanvasSizeSet = setInterval(() => {
-            if (this.ctx != null) {
-                // test code
-                // if (this.ctx.canvas.getAttribute("isUICanvasSizeSet") != null) {clearInterval(waitUntilCanvasSizeSet)}
-                this.ctx.rect(20, 20, 200, 200)
-                this.ctx.stroke()
-            }
-        //     console.log("still running")
-        // }, 1000)
+        // if (this.ctx != null) {
+            // test code
+            // if (this.ctx.canvas.getAttribute("isUICanvasSizeSet") != null) {clearInterval(waitUntilCanvasSizeSet)}
+            // this.ctx.rect(20, 20, 200, 200)
+            // this.ctx.stroke()
+        // }
     }
 }
 class sceneAnimation implements ISceneAnimation {
@@ -44,45 +41,9 @@ class sceneAnimation implements ISceneAnimation {
         this.player = new Player(sceneAnimationConfig.playerSheetPath)
     }
     initSceneConfig() {
-        const {backgroundSheetPath, canvasWidthPercent} = sceneAnimationConfig
+        const {canvasWidthPercent} = sceneAnimationConfig
         if (this.ctx != null) {
             this.ctx.canvas.width = document.documentElement.clientWidth * canvasWidthPercent
-
-            this.sprite.src = backgroundSheetPath
-
-            // temporarily use chronoValley8.png size without loading this.sprite. because this.player.setTilePosition() need canvas size to set player current tile position properly
-            // this.ctx.canvas.width = 810
-            // this.ctx.canvas.height = 648
-
-            this.sprite.onload = async () => {
-                if (this.ctx != null) {
-                    this.ctx.canvas.width = this.sprite.width;
-                    this.ctx.canvas.height = this.sprite.height;
-                    (this.ctx.canvas.previousElementSibling as HTMLCanvasElement).width = this.sprite.width;
-                    (this.ctx.canvas.previousElementSibling as HTMLCanvasElement).height = this.sprite.height;
-                    (this.ctx.canvas.previousElementSibling as HTMLCanvasElement).setAttribute("isUICanvasSizeSet", "true")
-                }
-                this.renderScreen()
-            }
-            // if (document.documentElement.clientWidth > 1366 && document.documentElement.clientWidth <= 1920) {
-            //     this.sprite.src = backgroundLargeSheetPath
-                // this.ctx.canvas.width = 1750
-                // this.ctx.canvas.height = 1400
-            //     this.player.scaleFactor += 0.2
-            // }
-            // if (document.documentElement.clientWidth > 768 && document.documentElement.clientWidth <= 1366) {
-            //      this.sprite.src = backgroundSheetPath
-            //      this.ctx.canvas.height = canvasHeightSize
-            // }
-            // if (document.documentElement.clientWidth <= 768) {
-            //     this.sprite.src = backgroundSmallSheetPath
-            //     // ensure sprite is loading
-            //     this.sprite.onload = () => {
-            //         this.ctx.canvas.width = this.sprite.width
-            //         this.ctx.canvas.height = this.sprite.height
-            //         this.player.scaleFactor -= 0.2
-            //     }
-            // }
             TileObjects.tileInfo.getResizedTileSize(this.ctx)
         }
         this.player.setPosition(sceneAnimationConfig.playerDefaultPosition[0], sceneAnimationConfig.playerDefaultPosition[1])
@@ -170,6 +131,7 @@ class sceneAnimation implements ISceneAnimation {
 
         const handleKeyUp = (e : KeyboardEvent) => {
             this.player.keysPressed.set(e.key, false);
+            this.player.restoreIdleFramePos()
         };
 
         window.addEventListener("keydown", handleKeyDown);

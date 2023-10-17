@@ -48,6 +48,7 @@ class Player {
         this.currentTilePos[1] = this.posy / yunit
         return true
     }
+    restoreIdleFramePos() { this.currentFramePosX = 0 }
     move(direction: number) {
         let movePosition = 0
         if (direction == 1)
