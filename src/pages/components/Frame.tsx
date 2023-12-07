@@ -56,12 +56,12 @@ function Frame() {
 
     return (
         <>
-            <div id="mainFrame" className="absolute top-20 w-11/12 inset-x-0 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-x-10">
-                <div id="self-introduction" className="flex flex-col justify-center">
+            <div id="mainFrame" className="absolute top-20 w-11/12 inset-x-0 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-10">
+                <div id="self-introduction" className="flex flex-col justify-center order-2 sm:order-1 md:order-1 lg:order-1">
                     <div id="introduction-title" className="text-3xl">{portfolio.title}</div>
                     <div id="introduction-description" className="text-xl">{portfolio.jobDescription}</div>
                 </div>
-                <div className={`${canvasWidthClassName} mx-auto ring ring-green-800 rounded relative`}>
+                <div className={`${canvasWidthClassName} mx-auto ring ring-green-800 rounded relative order-1 sm:order-2 md:order-2 lg:order-2`}>
                     <canvas ref={userInterfaceRef} id="userInterface" className="w-full absolute"></canvas>
                     <canvas ref={sceneAnimationRef} id="sceneAnimation" className="w-full"></canvas>
                 </div>
