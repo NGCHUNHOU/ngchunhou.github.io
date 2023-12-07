@@ -1,4 +1,5 @@
 import {useRef, useEffect} from 'react'
+import {portfolio} from '@/data/sceneAnimationConfig'
 import sceneAnimationConfig from '@/data/sceneAnimationConfig'
 import {userInterfaceScene, sceneAnimation, ISceneAnimation}from '@/scene/SceneAnimation'
 
@@ -13,6 +14,7 @@ function getWidthClassName() {
         "0.5" : "w-6/12",
         "0.6" : "w-3/5",
         "0.8" : "w-4/5",
+        "1.0" : "w-full",
     }
     if (tailwindClasses[canvasWidthPercent.toString()] === undefined)
         return ""
@@ -54,7 +56,11 @@ function Frame() {
 
     return (
         <>
-            <div id="mainFrame" className="absolute top-20 w-full">
+            <div id="mainFrame" className="absolute top-20 w-11/12 inset-x-0 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-x-10">
+                <div id="self-introduction" className="flex flex-col justify-center">
+                    <div id="introduction-title" className="text-3xl">{portfolio.title}</div>
+                    <div id="introduction-description" className="text-xl">{portfolio.jobDescription}</div>
+                </div>
                 <div className={`${canvasWidthClassName} mx-auto ring ring-green-800 rounded relative`}>
                     <canvas ref={userInterfaceRef} id="userInterface" className="w-full absolute"></canvas>
                     <canvas ref={sceneAnimationRef} id="sceneAnimation" className="w-full"></canvas>

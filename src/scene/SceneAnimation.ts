@@ -43,8 +43,7 @@ class sceneAnimation implements ISceneAnimation {
     initSceneConfig() {
         const {canvasWidthPercent} = sceneAnimationConfig
         if (this.ctx != null) {
-            this.ctx.canvas.width = document.documentElement.clientWidth * canvasWidthPercent
-            TileObjects.tileInfo.getResizedTileSize(this.ctx)
+            TileObjects.tileInfo.setResizedTileSize(this.ctx)
         }
         this.player.setPosition(sceneAnimationConfig.playerDefaultPosition[0], sceneAnimationConfig.playerDefaultPosition[1])
     }

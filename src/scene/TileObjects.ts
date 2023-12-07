@@ -7,7 +7,7 @@ class Tile {
     static tilesWidth = sceneAnimationConfig.defaultTilesWidth
     static tilesHeight = sceneAnimationConfig.defaultTilesHeight
     static resizedTileSize = 0
-    static getResizedTileSize(ctx : CanvasRenderingContext2D) {
+    static setResizedTileSize(ctx : CanvasRenderingContext2D) {
         const originTilesWidth = sceneAnimationConfig.defaultTileWidthHeight * sceneAnimationConfig.defaultTilesWidth
         const scaleFactor =  ctx.canvas.width / originTilesWidth 
         Tile.resizedTileSize = sceneAnimationConfig.defaultTileWidthHeight * scaleFactor
