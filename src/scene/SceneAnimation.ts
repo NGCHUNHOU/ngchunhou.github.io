@@ -41,7 +41,6 @@ class sceneAnimation implements ISceneAnimation {
         this.player = new Player(sceneAnimationConfig.playerSheetPath)
     }
     initSceneConfig() {
-        const {canvasWidthPercent} = sceneAnimationConfig
         if (this.ctx != null) {
             TileObjects.tileInfo.setResizedTileSize(this.ctx)
         }
