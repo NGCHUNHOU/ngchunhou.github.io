@@ -73,16 +73,16 @@ class sceneAnimation implements ISceneAnimation {
             const leftBlock = TileObjects.collision.twoD_tilesMap[playerYVisionStart+1][playerXVisionStart]
             const rightBlock = TileObjects.collision.twoD_tilesMap[playerYVisionStart+1][playerXVisionEnd]
 
-            if (topBlock != 0 || playerYVisionStart == 0) {
+            if (topBlock != 0) {
                 this.player.keysPressed.set('w', false)
             }
-            if (bottomBlock != 0 || (playerYVisionEnd == sceneAnimationConfig.defaultTilesHeight - 1)) {
+            if (bottomBlock != 0) {
                 this.player.keysPressed.set('s', false)
             }
-            if (leftBlock != 0 || playerXVisionStart == -1) {
+            if (leftBlock != 0) {
                 this.player.keysPressed.set('a', false)
             }
-            if (rightBlock != 0 || (playerXVisionEnd == sceneAnimationConfig.defaultTilesWidth - 1)) {
+            if (rightBlock != 0) {
                 this.player.keysPressed.set('d', false)
             }
 
