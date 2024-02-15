@@ -116,6 +116,7 @@ class sceneAnimation implements ISceneAnimation {
 
             this.ctx.drawImage(this.sprite, 0, 0, this.sprite.width, this.sprite.height)
             this.ctx.drawImage(this.player.sprite, this.player.getFrameWidth(), this.player.getFrameHeight(), this.player.widthSizeInCanvas, this.player.heightSizeInCanvas, this.player.getPlayerPosX(), this.player.getPlayerPosY(), 80*this.player.scaleFactor, 120*this.player.scaleFactor)
+            // TileObjects.collision.draw(this.ctx)
         }
         requestAnimationFrame(this.renderScreen.bind(this))
     }
