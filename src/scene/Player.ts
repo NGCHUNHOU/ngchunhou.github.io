@@ -44,8 +44,8 @@ class Player {
         
         const xunit = ctx.width / sceneAnimationConfig.defaultTilesWidth
         const yunit = ctx.height / sceneAnimationConfig.defaultTilesHeight
-        this.currentTilePos[0] = this.posx / xunit
-        this.currentTilePos[1] = this.posy / yunit
+        this.currentTilePos[0] = Math.floor(this.posx / xunit)
+        this.currentTilePos[1] = Math.floor(this.posy / yunit)
         return true
     }
     restoreIdleFramePos() { this.currentFramePosX = 0 }

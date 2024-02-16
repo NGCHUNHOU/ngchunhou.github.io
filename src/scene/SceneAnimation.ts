@@ -63,10 +63,10 @@ class sceneAnimation implements ISceneAnimation {
             this.ctx.clearRect(0,0, this.ctx.canvas.width,  this.ctx.canvas.height)
             this.player.setTilePosition(this.ctx.canvas)
 
-            const playerXVisionStart = Math.round(this.player.currentTilePos[0] - 1)
-            const playerXVisionEnd = Math.round(this.player.currentTilePos[0] + 1)
-            const playerYVisionStart = Math.round(this.player.currentTilePos[1] - 1)
-            const playerYVisionEnd = Math.round(this.player.currentTilePos[1] + 1)
+            const playerXVisionStart = this.player.currentTilePos[0] - 1
+            const playerXVisionEnd = this.player.currentTilePos[0] + 1
+            const playerYVisionStart = this.player.currentTilePos[1] - 1
+            const playerYVisionEnd = this.player.currentTilePos[1] + 1
 
             const topBlock = TileObjects.collision.twoD_tilesMap[playerYVisionStart][playerXVisionStart+1]
             const bottomBlock = TileObjects.collision.twoD_tilesMap[playerYVisionEnd][playerXVisionStart+1]
