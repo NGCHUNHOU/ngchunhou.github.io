@@ -5,10 +5,12 @@ import TileObjects from './TileObjects'
 
 interface ISceneAnimation {
     startAnimation() : void
+    initAssets(ctx : RefObject<HTMLCanvasElement>) : void
 }
 class userInterfaceScene implements ISceneAnimation {
     ctx : CanvasRenderingContext2D | null = null
-    constructor(ctx : RefObject<HTMLCanvasElement>) {
+    constructor() {}
+    initAssets(ctx : RefObject<HTMLCanvasElement>) {
         if (!ctx.current)
             throw new Error("failed to get target canvas to render animation")
 
@@ -16,20 +18,26 @@ class userInterfaceScene implements ISceneAnimation {
         if (context !== null)
             this.ctx = context
     }
+    initCanvasSize(width : number, height: number) {
+        this.ctx.canvas.width = width
+        this.ctx.canvas.height = height
+    }
     startAnimation() {
-        // if (this.ctx != null) {
-            // test code
-            // if (this.ctx.canvas.getAttribute("isUICanvasSizeSet") != null) {clearInterval(waitUntilCanvasSizeSet)}
-            // this.ctx.rect(20, 20, 200, 200)
-            // this.ctx.stroke()
-        // }
+        // test code
+        // this.ctx.rect(20, 20, 200, 200)
+        // this.ctx.stroke()
     }
 }
 class sceneAnimation implements ISceneAnimation {
     ctx : CanvasRenderingContext2D | null = null
     sprite : HTMLImageElement
     player : Player
-    constructor(ctx : RefObject<HTMLCanvasElement>) {
+    constructor() {}
+    initSceneConfig() {
+        TileObjects.tileInfo.setResizedTileSize(this.ctx)
+        this.player.setPosition(sceneAnimationConfig.playerDefaultPosition[0], sceneAnimationConfig.playerDefaultPosition[1])
+    }
+    initAssets(ctx : RefObject<HTMLCanvasElement>) {
         if (!ctx.current)
             throw new Error("failed to get target canvas to render animation")
 
@@ -38,13 +46,14 @@ class sceneAnimation implements ISceneAnimation {
             this.ctx = context
 
         this.sprite = new Image()
+        this.sprite.src = sceneAnimationConfig.backgroundSheetPath
         this.player = new Player(sceneAnimationConfig.playerSheetPath)
+
+        this.initSceneConfig()
     }
-    initSceneConfig() {
-        if (this.ctx != null) {
-            TileObjects.tileInfo.setResizedTileSize(this.ctx)
-        }
-        this.player.setPosition(sceneAnimationConfig.playerDefaultPosition[0], sceneAnimationConfig.playerDefaultPosition[1])
+    initCanvasSize() {
+        this.ctx.canvas.width = this.sprite.width;
+        this.ctx.canvas.height = this.sprite.height;
     }
     renderScreen()  {
         // this.ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)
@@ -137,7 +146,6 @@ class sceneAnimation implements ISceneAnimation {
         window.addEventListener("keyup", handleKeyUp);
     }
     startAnimation() {
-        this.initSceneConfig()
         this.makePlayerMove()
     }
 }

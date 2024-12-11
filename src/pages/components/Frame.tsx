@@ -1,55 +1,43 @@
-import {useRef, useEffect} from 'react'
+import {useRef, useState, useEffect} from 'react'
 import {portfolio} from '@/data/sceneAnimationConfig'
 import sceneAnimationConfig from '@/data/sceneAnimationConfig'
 import {userInterfaceScene, sceneAnimation, ISceneAnimation}from '@/scene/SceneAnimation'
 
-let SceneAnimation: sceneAnimation | null = null
-let UiAnimation: userInterfaceScene | null = null
-
-function getWidthClassName() {
-    const canvasWidthPercent : number = sceneAnimationConfig.canvasWidthPercent
-    const tailwindClasses : {[key:string] : string} = {
-        "0.2" : "w-1/5",
-        "0.4" : "w-2/5",
-        "0.5" : "w-6/12",
-        "0.6" : "w-3/5",
-        "0.8" : "w-4/5",
-        "1.0" : "w-full",
-    }
-    if (tailwindClasses[canvasWidthPercent.toString()] === undefined)
-        return ""
-    return tailwindClasses[canvasWidthPercent.toString()]
-}
-
 function Frame() {
+    function getWidthClassName() {
+        const canvasWidthPercent : number = sceneAnimationConfig.canvasWidthPercent
+        const tailwindClasses : {[key:string] : string} = {
+            "0.2" : "w-1/5",
+            "0.4" : "w-2/5",
+            "0.5" : "w-6/12",
+            "0.6" : "w-3/5",
+            "0.8" : "w-4/5",
+            "1" : "w-full",
+        }
+        if (tailwindClasses[canvasWidthPercent.toString()] === undefined)
+            return ""
+        return tailwindClasses[canvasWidthPercent.toString()]
+    }
+
     const sceneAnimationRef = useRef<HTMLCanvasElement>(null)
     const userInterfaceRef = useRef<HTMLCanvasElement>(null)
-    const canvasWidthClassName = getWidthClassName()
+    const SceneAnimation: sceneAnimation = new sceneAnimation()
+    const UiAnimation: userInterfaceScene = new userInterfaceScene()
+    const [canvasWidthClassName, setCanvasWidthClassName] = useState(getWidthClassName())
 
     useEffect(() => {
-        SceneAnimation = new sceneAnimation(sceneAnimationRef);
-        UiAnimation = new userInterfaceScene(userInterfaceRef);
-        SceneAnimation.sprite = new Image()
-        SceneAnimation.sprite.src = sceneAnimationConfig.backgroundSheetPath
+        SceneAnimation.initAssets(sceneAnimationRef)
+        UiAnimation.initAssets(userInterfaceRef)
 
         SceneAnimation.sprite.onload = () => {
-            if (SceneAnimation !== null) {
-                if (SceneAnimation.ctx !== null) {
-                    SceneAnimation.ctx.canvas.width = SceneAnimation.sprite.width;
-                    SceneAnimation.ctx.canvas.height = SceneAnimation.sprite.height;
-                }
-                if (UiAnimation !== null) {
-                    if (UiAnimation.ctx != null) {
-                        UiAnimation.ctx.canvas.width = SceneAnimation.sprite.width;
-                        UiAnimation.ctx.canvas.height = SceneAnimation.sprite.height;
-                    }
-                }
-                [SceneAnimation, UiAnimation].forEach((animation) => {
-                    if (animation !== null)
-                        animation.startAnimation()
-                })
-                SceneAnimation.renderScreen()
-            }
+              SceneAnimation.initCanvasSize();
+              UiAnimation.initCanvasSize(SceneAnimation.sprite.width, SceneAnimation.sprite.height);
+
+              [SceneAnimation, UiAnimation].forEach((animation) => {
+                  if (animation !== null)
+                      animation.startAnimation()
+              })
+              SceneAnimation.renderScreen()
         }
 
     })
