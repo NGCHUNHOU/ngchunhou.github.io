@@ -15,8 +15,7 @@ class userInterfaceScene implements ISceneAnimation {
             throw new Error("failed to get target canvas to render animation")
 
         let context = ctx.current.getContext("2d")
-        if (context !== null)
-            this.ctx = context
+        this.ctx = context
     }
     initCanvasSize(width : number, height: number) {
         this.ctx.canvas.width = width
@@ -42,8 +41,7 @@ class sceneAnimation implements ISceneAnimation {
             throw new Error("failed to get target canvas to render animation")
 
         let context = ctx.current.getContext("2d")
-        if (context !== null)
-            this.ctx = context
+        this.ctx = context
 
         this.sprite = new Image()
         this.sprite.src = sceneAnimationConfig.backgroundSheetPath
