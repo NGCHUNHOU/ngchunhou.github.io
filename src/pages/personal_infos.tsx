@@ -1,8 +1,12 @@
+import Home from './index'
+import topBarItems from '@/data/headerItems'
+import Layout from './components/layout'
+
 function personal_infos() {
     return (
-        <>
-          personal_infos
-        </>
+      <Layout pageName={topBarItems[0].pageTitle}>
+        <div>child from personal_infos</div>
+      </Layout>
     )
 
 }

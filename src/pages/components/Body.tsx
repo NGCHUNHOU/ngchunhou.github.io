@@ -1,12 +1,12 @@
 import Frame from './Frame'
 import Header from './Header'
 import Footer from './Footer'
-function Body() {
+function Body({ children }) {
     return (
         <>
             <div className="body relative" id="mainBody">
                 <Header></Header>
-                <Frame></Frame>
+                {children}
                 <Footer></Footer>
             </div>
         </>
