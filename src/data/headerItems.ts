@@ -1,6 +1,6 @@
 const topBarItems = [
-    {name: "PERSONAL INFO", isCurrentItem: true}, 
-    {name: "TOOLS", isCurrentItem: false}, 
-    {name: "CONTACT", isCurrentItem: false}
+    {name: "PERSONAL INFO", href: "/personal_infos"}, 
+    {name: "TOOLS", href: "/tools"}, 
+    {name: "CONTACTS", href: "/contacts"}
 ]
 export default topBarItems

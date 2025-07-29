@@ -2,6 +2,10 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+html, body, #__next, main {
+  height: 100%;
+}
+
 :root {
     --bodyHeight: 1500px;
     --barColor: rgba(21, 71, 148, 1);
@@ -12,5 +16,5 @@
 
 .body {
     background: url(/stardewvalley.jpg) no-repeat fixed center center / cover;
-    height: 900px;
+    height: 100%;
 }

@@ -1,4 +1,5 @@
 import topBarItems from '@/data/headerItems'
+import Link from 'next/link'
 function Header() {
   return (
     <>
@@ -26,7 +27,8 @@ function Header() {
           <div className="hidden w-full md:block md:w-auto" id="navbar-default">
             <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0">
                 {topBarItems.map(item => 
-                    <li key={item.name}><a href="#" className="block text-white py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 md:dark:hover:text-white">{item.name}</a></li>
+                    <li key={item.name}>
+                      <Link href={item.href} className="block text-white py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 md:dark:hover:text-white">{item.name}</Link></li>
                 )}
 
             </ul>
