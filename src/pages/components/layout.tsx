@@ -8,7 +8,7 @@ function Layout({ pageName, children }) {
           <div className="body flex flex-col" id="mainBody">
             <Header></Header>
               <Head>
-                <title>NG CHUN HOU | {pageName}</title>
+                <title>{`NG CHUN HOU | ${pageName}`}</title>
                 <meta name="description" content="my portfolio site" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
