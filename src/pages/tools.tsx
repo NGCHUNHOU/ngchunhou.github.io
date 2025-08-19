@@ -1,6 +1,6 @@
 import Home from './index'
 import topBarItems from '@/data/headerItems'
-import Layout from './components/layout'
+import Layout from './components/Layout'
 
 function tools() {
     return (
