@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export type TabKey = "Inventory" | "Skills" | "Social" | "Crafting" | "Map";
 
-function personal_infos() {
+function Personal_infos() {
   const TABS: TabKey[] = ["Inventory", "Skills", "Social", "Crafting", "Map"];
   const [active, setActive] = useState<TabKey>("Inventory");
   return (
@@ -109,7 +109,7 @@ function personal_infos() {
     </Layout>
   );
 }
-export default personal_infos;
+export default Personal_infos;
 
 /* ----------------------- Shared UI ----------------------- */
 function Panel({

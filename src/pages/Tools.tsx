@@ -2,12 +2,12 @@ import Home from './index'
 import topBarItems from '@/data/headerItems'
 import Layout from './components/Layout'
 
-function tools() {
+function Tools() {
     return (
       <Layout pageName={topBarItems[1].pageTitle}>
-          <div>child from tools</div>
+          <div>child from Tools</div>
       </Layout>
     )
 
 }
-export default tools
+export default Tools
