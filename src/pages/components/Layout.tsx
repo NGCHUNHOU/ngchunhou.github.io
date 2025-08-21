@@ -2,7 +2,8 @@ import Frame from './Frame'
 import Header from './Header'
 import Footer from './Footer'
 import Head from 'next/head'
-function Layout({ pageName, children }) {
+import {ReactNode} from 'react'
+function Layout({ pageName, children } : {pageName: string, children:ReactNode}) {
     return (
         <>
           <div className="body flex flex-col" id="mainBody">

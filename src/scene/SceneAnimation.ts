@@ -1,5 +1,5 @@
 import sceneAnimationConfig from '@/data/sceneAnimationConfig'
-import {RefObject} from 'react'
+import {MutableRefObject, RefObject} from 'react'
 import Player from './Player'
 import TileObjects from './TileObjects'
 
@@ -8,13 +8,12 @@ interface ISceneAnimation {
     initAssets(ctx : RefObject<HTMLCanvasElement>) : void
 }
 class userInterfaceScene implements ISceneAnimation {
-    ctx : CanvasRenderingContext2D | null = null
-    constructor() {}
+    ctx : CanvasRenderingContext2D
+    constructor(ctx : MutableRefObject<HTMLCanvasElement>) {
+        this.ctx = ctx.current?.getContext("2d") as CanvasRenderingContext2D
+    }
     initAssets(ctx : RefObject<HTMLCanvasElement>) {
-        if (!ctx.current)
-            throw new Error("failed to get target canvas to render animation")
-
-        let context = ctx.current.getContext("2d")
+        let context = ctx.current?.getContext("2d") as CanvasRenderingContext2D
         this.ctx = context
     }
     initCanvasSize(width : number, height: number) {
@@ -28,25 +27,19 @@ class userInterfaceScene implements ISceneAnimation {
     }
 }
 class sceneAnimation implements ISceneAnimation {
-    ctx : CanvasRenderingContext2D | null = null
+    ctx : CanvasRenderingContext2D
     sprite : HTMLImageElement
-    player : Player
-    constructor() {}
+    player : Player = new Player(sceneAnimationConfig.playerSheetPath)
+    constructor(ctx : MutableRefObject<HTMLCanvasElement>, img: HTMLImageElement) {
+        this.ctx = ctx.current?.getContext("2d") as CanvasRenderingContext2D
+        this.sprite = img
+    }
     initSceneConfig() {
         TileObjects.tileInfo.setResizedTileSize(this.ctx)
         this.player.setPosition(sceneAnimationConfig.playerDefaultPosition[0], sceneAnimationConfig.playerDefaultPosition[1])
     }
     initAssets(ctx : RefObject<HTMLCanvasElement>) {
-        if (!ctx.current)
-            throw new Error("failed to get target canvas to render animation")
-
-        let context = ctx.current.getContext("2d")
-        this.ctx = context
-
-        this.sprite = new Image()
         this.sprite.src = sceneAnimationConfig.backgroundSheetPath
-        this.player = new Player(sceneAnimationConfig.playerSheetPath)
-
         this.initSceneConfig()
     }
     initCanvasSize() {

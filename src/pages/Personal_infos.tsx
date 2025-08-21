@@ -3,18 +3,21 @@ import topBarItems from "@/data/headerItems";
 import Layout from "./components/Layout";
 import { useState } from "react";
 
-export type TabKey = "Inventory" | "Skills" | "Social" | "Crafting" | "Map";
+const PERSONAL_DATA : {name: string} = {
+  name: "NG CHUN HOU"
+} as const
+
+const MENU_TABS: readonly string[] = ["Inventory", "Skills", "Social", "Crafting", "Map"] as const
 
 function Personal_infos() {
-  const TABS: TabKey[] = ["Inventory", "Skills", "Social", "Crafting", "Map"];
-  const [active, setActive] = useState<TabKey>("Inventory");
+  const [active, setActive] = useState<string>("Inventory");
   return (
     <Layout pageName={topBarItems[0].pageTitle}>
       <div className="w-11/12 mx-auto my-5">
         <div className="rounded-2xl bg-stone-900/90 text-stone-100 shadow-2xl ring-1 ring-stone-800">
           {/* Header Tabs */}
           <div className="flex items-center gap-2 border-b border-stone-800 p-2">
-            {TABS.map((tab) => (
+            {MENU_TABS.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActive(tab)}

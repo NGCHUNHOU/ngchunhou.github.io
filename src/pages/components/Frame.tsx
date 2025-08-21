@@ -1,4 +1,5 @@
-import {useRef, useState, useEffect} from 'react'
+'use client'
+import {useRef, useState, useEffect, MutableRefObject} from 'react'
 import {portfolio} from '@/data/sceneAnimationConfig'
 import sceneAnimationConfig from '@/data/sceneAnimationConfig'
 import {userInterfaceScene, sceneAnimation, ISceneAnimation}from '@/scene/SceneAnimation'
@@ -19,23 +20,22 @@ function Frame() {
         return tailwindClasses[canvasWidthPercent.toString()]
     }
 
-    const sceneAnimationRef = useRef<HTMLCanvasElement>(null)
-    const userInterfaceRef = useRef<HTMLCanvasElement>(null)
-    const SceneAnimation: sceneAnimation = new sceneAnimation()
-    const UiAnimation: userInterfaceScene = new userInterfaceScene()
     const [canvasWidthClassName, setCanvasWidthClassName] = useState(getWidthClassName())
 
+    const sceneAnimationRef = useRef<HTMLCanvasElement | null>(null)
+    const userInterfaceRef = useRef<HTMLCanvasElement | null>(null)
     useEffect(() => {
+        const SceneAnimation = new sceneAnimation(sceneAnimationRef as MutableRefObject<HTMLCanvasElement>, new Image())
+        const UiAnimation = new userInterfaceScene(userInterfaceRef as MutableRefObject<HTMLCanvasElement>)
         SceneAnimation.initAssets(sceneAnimationRef)
         UiAnimation.initAssets(userInterfaceRef)
 
         SceneAnimation.sprite.onload = () => {
               SceneAnimation.initCanvasSize();
-              UiAnimation.initCanvasSize(SceneAnimation.sprite.width, SceneAnimation.sprite.height);
+              UiAnimation.initCanvasSize(SceneAnimation?.sprite.width as number, SceneAnimation?.sprite.height as number);
 
               [SceneAnimation, UiAnimation].forEach((animation) => {
-                  if (animation !== null)
-                      animation.startAnimation()
+                  animation.startAnimation()
               })
               SceneAnimation.renderScreen()
         }
