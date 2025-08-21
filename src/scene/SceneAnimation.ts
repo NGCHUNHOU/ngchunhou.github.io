@@ -10,11 +10,15 @@ interface ISceneAnimation {
 class userInterfaceScene implements ISceneAnimation {
     ctx : CanvasRenderingContext2D
     constructor(ctx : MutableRefObject<HTMLCanvasElement>) {
-        this.ctx = ctx.current?.getContext("2d") as CanvasRenderingContext2D
+        if (ctx.current === null) {
+          throw new Error(`userInterfaceScene(${ctx.current}): missing HTMLCanvasElement from useRef`)
+        } else {
+          this.ctx = ctx.current.getContext("2d") as CanvasRenderingContext2D
+        }
     }
     initAssets(ctx : RefObject<HTMLCanvasElement>) {
-        let context = ctx.current?.getContext("2d") as CanvasRenderingContext2D
-        this.ctx = context
+        // let context = ctx.current?.getContext("2d") as CanvasRenderingContext2D
+        // this.ctx = context
     }
     initCanvasSize(width : number, height: number) {
         this.ctx.canvas.width = width
@@ -31,7 +35,11 @@ class sceneAnimation implements ISceneAnimation {
     sprite : HTMLImageElement
     player : Player = new Player(sceneAnimationConfig.playerSheetPath)
     constructor(ctx : MutableRefObject<HTMLCanvasElement>, img: HTMLImageElement) {
-        this.ctx = ctx.current?.getContext("2d") as CanvasRenderingContext2D
+        if (ctx.current === null) {
+          throw new Error(`sceneAnimation(${ctx.current}): missing HTMLCanvasElement from useRef`)
+        } else {
+          this.ctx = ctx.current.getContext("2d") as CanvasRenderingContext2D
+        }
         this.sprite = img
     }
     initSceneConfig() {
