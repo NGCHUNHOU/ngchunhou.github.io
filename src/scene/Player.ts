@@ -1,9 +1,11 @@
+import { Game_Item } from "../data_structure/world_tree"
 import sceneAnimationConfig from "@/data/sceneAnimationConfig"
 enum direction {
     vertical = 1,
     horizontal = 2
 }
-class Player {
+
+class Player implements Game_Item {
     leftOffset : number = 15
     frameWidth = 65
     frameHeight = 130
@@ -104,6 +106,9 @@ class Player {
         this.currentFramePosY = 1
         this.posx+=sceneAnimationConfig.playerMoveSpeed 
         this.move(direction.horizontal)
+    }
+    is_game_item() {
+      return true
     }
 }
 export default Player
