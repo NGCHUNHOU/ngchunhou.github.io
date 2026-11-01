@@ -29,6 +29,7 @@
     "gh-pages": "^5.0.0",
     "jest": "^30.5.2",
     "postcss": "^8.4.21",
-    "tailwindcss": "^3.2.7"
+    "tailwindcss": "^3.2.7",
+    "ts-node": "^10.9.2"
   }
 }
