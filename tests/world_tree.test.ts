@@ -15,7 +15,7 @@ describe('World Tree Functionality Test', () => {
     w.children = [ 
       foo, p
     ]
-    expect(w.draw()).toBe(true);
+    expect(w.apply_all_game_items_into_game()).toBe(true);
   });
 
   test('test if children could fail to initialize', () => {
@@ -24,6 +24,6 @@ describe('World Tree Functionality Test', () => {
     w.children = [ 
       foo
     ]
-    expect(w.draw()).toBe(false);
+    expect(w.apply_all_game_items_into_game()).toBe(false);
   });
 });

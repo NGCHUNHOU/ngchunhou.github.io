@@ -107,7 +107,7 @@ class Player implements Game_Item {
         this.posx+=sceneAnimationConfig.playerMoveSpeed 
         this.move(direction.horizontal)
     }
-    is_game_item() {
+    apply_into_game() {
       return true
     }
 }

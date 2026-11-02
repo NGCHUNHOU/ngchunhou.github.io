@@ -2,6 +2,7 @@ import sceneAnimationConfig from '@/data/sceneAnimationConfig'
 import {MutableRefObject, RefObject} from 'react'
 import Player from './Player'
 import TileObjects from './TileObjects'
+import {World_Tree, Canvas_UI_Widget} from '@/data_structure/world_tree'
 
 interface ISceneAnimation {
     startAnimation() : void
@@ -16,7 +17,7 @@ class userInterfaceScene implements ISceneAnimation {
           this.ctx = ctx.current.getContext("2d") as CanvasRenderingContext2D
         }
     }
-    initAssets(ctx : RefObject<HTMLCanvasElement>) {
+    initAssets(ctx : RefObject<HTMLCanvasElement>) : void {
         // let context = ctx.current?.getContext("2d") as CanvasRenderingContext2D
         // this.ctx = context
     }
@@ -32,27 +33,22 @@ class userInterfaceScene implements ISceneAnimation {
 }
 class sceneAnimation implements ISceneAnimation {
     ctx : CanvasRenderingContext2D
-    sprite : HTMLImageElement
-    player : Player = new Player(sceneAnimationConfig.playerSheetPath)
-    constructor(ctx : MutableRefObject<HTMLCanvasElement>, img: HTMLImageElement) {
+    world: World_Tree
+    constructor(ctx : MutableRefObject<HTMLCanvasElement>, img: HTMLImageElement, world: World_Tree) {
         if (ctx.current === null) {
           throw new Error(`sceneAnimation(${ctx.current}): missing HTMLCanvasElement from useRef`)
         } else {
           this.ctx = ctx.current.getContext("2d") as CanvasRenderingContext2D
         }
-        this.sprite = img
-    }
-    initSceneConfig() {
-        TileObjects.tileInfo.setResizedTileSize(this.ctx)
-        this.player.setPosition(sceneAnimationConfig.playerDefaultPosition[0], sceneAnimationConfig.playerDefaultPosition[1])
+        this.world = world
     }
     initAssets(ctx : RefObject<HTMLCanvasElement>) {
-        this.sprite.src = sceneAnimationConfig.backgroundSheetPath
-        this.initSceneConfig()
+        (this.world.get_child("tile_objects") as TileObjects).tileInfo.setResizedTileSize(this.ctx);
+        (this.world.get_child("current_player") as Player).setPosition(sceneAnimationConfig.playerDefaultPosition[0], sceneAnimationConfig.playerDefaultPosition[1]);
     }
     initCanvasSize() {
-        this.ctx.canvas.width = this.sprite.width;
-        this.ctx.canvas.height = this.sprite.height;
+        this.ctx.canvas.width = (this.world.get_child("game_background_image") as Canvas_UI_Widget).get_node_image().width;
+        this.ctx.canvas.height = (this.world.get_child("game_background_image") as Canvas_UI_Widget).get_node_image().height;
     }
     renderScreen()  {
         // this.ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh)
@@ -68,77 +64,78 @@ class sceneAnimation implements ISceneAnimation {
         // this.ctx.drawImage(this.player.sprite, 0, 0, 80, 120, this.player.posx, this.player.posy, 80*this.player.scaleFactor, 120*this.player.scaleFactor)
         // this.ctx.drawImage(this.player.sprite, this.player.getFrameWidth(), 0, 66, 120, this.player.posx, this.player.posy, 80*this.player.scaleFactor, 120*this.player.scaleFactor)
         if (this.ctx != null) {
-            this.ctx.clearRect(0,0, this.ctx.canvas.width,  this.ctx.canvas.height)
-            this.player.setTilePosition(this.ctx.canvas)
+            this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+           (this.world.get_child("current_player") as Player).setTilePosition(this.ctx.canvas);
 
-            const playerXVisionStart = this.player.currentTilePos[0] - 1
-            const playerXVisionEnd = this.player.currentTilePos[0] + 1
-            const playerYVisionStart = this.player.currentTilePos[1] - 1
-            const playerYVisionEnd = this.player.currentTilePos[1] + 1
+            const playerXVisionStart = (this.world.get_child("current_player") as Player).currentTilePos[0] - 1
+            const playerXVisionEnd = (this.world.get_child("current_player") as Player).currentTilePos[0] + 1
+            const playerYVisionStart = (this.world.get_child("current_player") as Player).currentTilePos[1] - 1
+            const playerYVisionEnd = (this.world.get_child("current_player") as Player).currentTilePos[1] + 1
 
-            const topBlock = TileObjects.collision.twoD_tilesMap[playerYVisionStart][playerXVisionStart+1]
-            const bottomBlock = TileObjects.collision.twoD_tilesMap[playerYVisionEnd][playerXVisionStart+1]
-            const leftBlock = TileObjects.collision.twoD_tilesMap[playerYVisionStart+1][playerXVisionStart]
-            const rightBlock = TileObjects.collision.twoD_tilesMap[playerYVisionStart+1][playerXVisionEnd]
+            const topBlock = (this.world.get_child("tile_objects") as TileObjects).collision.twoD_tilesMap[playerYVisionStart][playerXVisionStart+1]
+            const bottomBlock = (this.world.get_child("tile_objects") as TileObjects).collision.twoD_tilesMap[playerYVisionEnd][playerXVisionStart+1]
+            const leftBlock = (this.world.get_child("tile_objects") as TileObjects).collision.twoD_tilesMap[playerYVisionStart+1][playerXVisionStart]
+            const rightBlock = (this.world.get_child("tile_objects") as TileObjects).collision.twoD_tilesMap[playerYVisionStart+1][playerXVisionEnd]
 
             if (topBlock != 0) {
-                this.player.keysPressed.set('w', false)
+                (this.world.get_child("current_player") as Player).keysPressed.set('w', false)
             }
             if (bottomBlock != 0) {
-                this.player.keysPressed.set('s', false)
+                (this.world.get_child("current_player") as Player).keysPressed.set('s', false)
             }
             if (leftBlock != 0) {
-                this.player.keysPressed.set('a', false)
+                (this.world.get_child("current_player") as Player).keysPressed.set('a', false)
             }
             if (rightBlock != 0) {
-                this.player.keysPressed.set('d', false)
+                (this.world.get_child("current_player") as Player).keysPressed.set('d', false)
             }
 
-            if (this.player.keysPressed.get("w")) {
-                if (this.player.keysPressed.get("a")) {
-                    this.player.goUpLeft();
-                } else if (this.player.keysPressed.get("d")) {
-                    this.player.goUpRight();
+            if ((this.world.get_child("current_player") as Player).keysPressed.get("w")) {
+                if ((this.world.get_child("current_player") as Player).keysPressed.get("a")) {
+                    (this.world.get_child("current_player") as Player).goUpLeft();
+                } else if ((this.world.get_child("current_player") as Player).keysPressed.get("d")) {
+                    (this.world.get_child("current_player") as Player).goUpRight();
                 } else {
-                    this.player.goUp();
+                    (this.world.get_child("current_player") as Player).goUp();
                 }
             }
 
-            if (this.player.keysPressed.get("s")) {
-                if (this.player.keysPressed.get("a")) {
-                    this.player.goDownLeft();
-                } else if (this.player.keysPressed.get("d")) {
-                    this.player.goDownRight();
+            if ((this.world.get_child("current_player") as Player).keysPressed.get("s")) {
+                if ((this.world.get_child("current_player") as Player).keysPressed.get("a")) {
+                    (this.world.get_child("current_player") as Player).goDownLeft();
+                } else if ((this.world.get_child("current_player") as Player).keysPressed.get("d")) {
+                    (this.world.get_child("current_player") as Player).goDownRight();
                 } else {
-                    this.player.goDown();
+                    (this.world.get_child("current_player") as Player).goDown();
                 }
             }
 
-            if (this.player.keysPressed.get("a")) {
-                this.player.goLeft();
+            if ((this.world.get_child("current_player") as Player).keysPressed.get("a")) {
+                (this.world.get_child("current_player") as Player).goLeft();
             }
 
-            if (this.player.keysPressed.get("d")) {
-                this.player.goRight();
+            if ((this.world.get_child("current_player") as Player).keysPressed.get("d")) {
+                (this.world.get_child("current_player") as Player).goRight();
             }
 
-            this.ctx.drawImage(this.sprite, 0, 0, this.sprite.width, this.sprite.height)
-            this.ctx.drawImage(this.player.sprite, this.player.getFrameWidth(), this.player.getFrameHeight(), this.player.widthSizeInCanvas, this.player.heightSizeInCanvas, this.player.getPlayerPosX(), this.player.getPlayerPosY(), 80*this.player.scaleFactor, 120*this.player.scaleFactor)
+
+            this.ctx.drawImage((this.world.get_child("game_background_image") as Canvas_UI_Widget).get_node_image(), 0, 0, (this.world.get_child("game_background_image") as Canvas_UI_Widget).get_node_image().width, (this.world.get_child("game_background_image") as Canvas_UI_Widget).get_node_image().height)
+            this.ctx.drawImage((this.world.get_child("current_player") as Player).sprite, (this.world.get_child("current_player") as Player).getFrameWidth(), (this.world.get_child("current_player") as Player).getFrameHeight(), (this.world.get_child("current_player") as Player).widthSizeInCanvas, (this.world.get_child("current_player") as Player).heightSizeInCanvas, (this.world.get_child("current_player") as Player).getPlayerPosX(), (this.world.get_child("current_player") as Player).getPlayerPosY(), 80*(this.world.get_child("current_player") as Player).scaleFactor, 120*(this.world.get_child("current_player") as Player).scaleFactor)
             // TileObjects.collision.draw(this.ctx)
         }
         requestAnimationFrame(this.renderScreen.bind(this))
     }
     makePlayerMove() {
         if (this.ctx != null)
-            this.player.setTilePosition(this.ctx.canvas)
+            (this.world.get_child("current_player") as Player).setTilePosition(this.ctx.canvas)
 
         const handleKeyDown = (e: KeyboardEvent) => {
-            this.player.keysPressed.set(e.key, true);
+            (this.world.get_child("current_player") as Player).keysPressed.set(e.key, true);
         };
 
         const handleKeyUp = (e : KeyboardEvent) => {
-            this.player.keysPressed.set(e.key, false);
-            this.player.restoreIdleFramePos()
+            (this.world.get_child("current_player") as Player).keysPressed.set(e.key, false);
+            (this.world.get_child("current_player") as Player).restoreIdleFramePos()
         };
 
         window.addEventListener("keydown", handleKeyDown);

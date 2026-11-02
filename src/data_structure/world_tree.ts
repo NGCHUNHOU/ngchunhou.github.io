@@ -1,21 +1,31 @@
 import Player from '../scene/Player'
-import { randomUUID } from 'node:crypto'
 
 interface Game_Item {
-  // this function should check if it is valid game item
-  is_game_item(): boolean
+  // this function should apply the item into the game canvas
+  apply_into_game(): boolean
 }
 
 class World_Tree {
-  public id: string = randomUUID();
+  public id: string = globalThis.crypto.randomUUID();
   public name: string = "";
   public parentId: string = "";
-  public children: Game_Item[] = [];
-  public draw(): boolean {
+  private game_item_index_map: Map<string, number> = new Map()
+  private children: Game_Item[] = [];
+  public apply_all_game_items_into_game(): boolean {
     for (const item of this.children) {
-      if (!item.is_game_item()) return false
+      if (!item.apply_into_game()) {
+        return false
+      }
     }
     return true
+  }
+  public add_child(game_item_name: string, game_item: Game_Item): boolean {
+    const current_item_index = this.children.push(game_item) - 1
+    this.game_item_index_map.set(game_item_name, current_item_index)
+    return true
+  }
+  public get_child(game_item_name: string): Game_Item {
+    return this.children[this.game_item_index_map.get(game_item_name) as number]
   }
 }
 
@@ -24,14 +34,14 @@ class Canvas_UI_Widget implements Game_Item {
   public constructor(node: any) {
     this._node = node
   }
-  public is_game_item() {
-    if (this._node !== null) {
-      if (this._node instanceof Image) {
-        return true
-      }
+  public apply_into_game() {
+    if (!(this._node instanceof Image)) {
       return false
     }
-    return false
+    return true
+  }
+  public get_node_image() {
+    return this._node
   }
 }
 

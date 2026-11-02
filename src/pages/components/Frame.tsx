@@ -2,7 +2,10 @@
 import {useRef, useState, useEffect, MutableRefObject} from 'react'
 import {portfolio} from '@/data/sceneAnimationConfig'
 import sceneAnimationConfig from '@/data/sceneAnimationConfig'
-import {userInterfaceScene, sceneAnimation, ISceneAnimation}from '@/scene/SceneAnimation'
+import {userInterfaceScene, sceneAnimation, ISceneAnimation} from '@/scene/SceneAnimation'
+import {World_Tree, Canvas_UI_Widget, Game_Item} from '@/data_structure/world_tree'
+import Player from '@/scene/Player'
+import TileObjects from '@/scene/TileObjects'
 
 function Frame() {
     function getWidthClassName() {
@@ -24,15 +27,28 @@ function Frame() {
 
     const sceneAnimationRef = useRef<HTMLCanvasElement | null>(null)
     const userInterfaceRef = useRef<HTMLCanvasElement | null>(null)
-    useEffect(() => {
-        const SceneAnimation = new sceneAnimation(sceneAnimationRef as MutableRefObject<HTMLCanvasElement>, new Image())
-        const UiAnimation = new userInterfaceScene(userInterfaceRef as MutableRefObject<HTMLCanvasElement>)
-        SceneAnimation.initAssets(sceneAnimationRef)
-        UiAnimation.initAssets(userInterfaceRef)
+    const world_tree = new World_Tree()
 
-        SceneAnimation.sprite.onload = () => {
+    useEffect(() => {
+        const background_image = new Image()
+        background_image.src = sceneAnimationConfig.backgroundSheetPath
+
+        const tile_objects = new TileObjects()
+
+        world_tree.add_child("game_background_image", new Canvas_UI_Widget(background_image));
+        world_tree.add_child("tile_objects", tile_objects);
+        world_tree.add_child("current_player", new Player(sceneAnimationConfig.playerSheetPath));
+
+        console.log("Frame:world_tree:42", world_tree)
+
+        const SceneAnimation = new sceneAnimation(sceneAnimationRef as MutableRefObject<HTMLCanvasElement>, new Image(), world_tree);
+        const UiAnimation = new userInterfaceScene(userInterfaceRef as MutableRefObject<HTMLCanvasElement>);
+        SceneAnimation.initAssets(sceneAnimationRef);
+        UiAnimation.initAssets(userInterfaceRef);
+
+        (SceneAnimation.world.get_child("game_background_image") as Canvas_UI_Widget).get_node_image().onload = () => {
               SceneAnimation.initCanvasSize();
-              UiAnimation.initCanvasSize(SceneAnimation?.sprite.width as number, SceneAnimation?.sprite.height as number);
+              UiAnimation.initCanvasSize((SceneAnimation?.world.get_child("game_background_image") as Canvas_UI_Widget).get_node_image().width as number, (SceneAnimation?.world.get_child("game_background_image") as Canvas_UI_Widget).get_node_image().height as number);
 
               [SceneAnimation, UiAnimation].forEach((animation) => {
                   animation.startAnimation()
@@ -40,7 +56,7 @@ function Frame() {
               SceneAnimation.renderScreen()
         }
 
-    })
+    }, [])
 
     return (
         <>
